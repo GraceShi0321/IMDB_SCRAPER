@@ -20,7 +20,7 @@ class ImdbSpider(Spider):
     The location of the files saved, as well as the total number of requests sent, are controlled by settings.py
     """
     
-    name = 'imdb_spider'
+    name       = 'imdb_spider'
 
     start_urls = ['https://www.imdb.com/title/tt0108778/']
     
@@ -31,8 +31,8 @@ class ImdbSpider(Spider):
         """
         # first get the link of the Cast & Crew page
         Cast_Crew_URL = response.css("a.ipc-metadata-list-item__icon-link")[0].attrib["href"]
-        prefix = "https://www.imdb.com"
-        CastCrew_URL = prefix + Cast_Crew_URL
+        prefix        = "https://www.imdb.com"
+        CastCrew_URL  = prefix + Cast_Crew_URL
         # Once there, the parse_full_credits(self,response) should be called
         yield Request(CastCrew_URL, callback = self.parse_full_credits)
         
@@ -44,9 +44,9 @@ class ImdbSpider(Spider):
         Crew members are not included.
         """
         # get the link of each actor/actress listed on the page
-        cast_links = response.css("td.primary_photo").css("a:first-child")
+        cast_links    = response.css("td.primary_photo").css("a:first-child")
         cast_suffixes = [link.attrib["href"] for link in cast_links]
-        cast_URL = ["https://www.imdb.com" + suffix for suffix in cast_suffixes]
+        cast_URL      = ["https://www.imdb.com" + suffix for suffix in cast_suffixes]
         # the method parse_actor_page(self, response) should be called when the actor/actress’s page is reached
         for url in cast_URL:    
             yield Request(url, callback = self.parse_actor_page)
@@ -60,7 +60,7 @@ class ImdbSpider(Spider):
         # get the name of the actor/actress
         ActorActress_name = response.css("span.itemprop::text")[0].get()
         # get all movies and TV shows for this actor/actress
-        works = response.css("div.filmo-category-section div a:first-child::text").getall()
+        works             = response.css("div.filmo-category-section div a:first-child::text").getall()
         for movie_or_TV_name in works:
             yield {
                     "actor/actress" : ActorActress_name,
