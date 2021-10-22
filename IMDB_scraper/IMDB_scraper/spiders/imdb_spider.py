@@ -10,7 +10,6 @@ Created on Thu Oct 21 15:28:13 2021
 
 from scrapy.spiders import Spider
 from scrapy.http import Request
-from scrapy.linkextractors import LinkExtractor
 
 class ImdbSpider(Spider):
     """
@@ -61,11 +60,11 @@ class ImdbSpider(Spider):
         # get the name of the actor/actress
         ActorActress_name = response.css("span.itemprop::text")[0].get()
         # get all movies and TV shows for this actor/actress
-        movie_or_TV_name = response.css("div.filmo-category-section div a:first-child::text").getall()
-        for work in movie_or_TV_name:
+        works = response.css("div.filmo-category-section div a:first-child::text").getall()
+        for movie_or_TV_name in works:
             yield {
                     "actor/actress" : ActorActress_name,
-                    "movie_or_TV_name": work
+                    "movie_or_TV_name": movie_or_TV_name
                     }
         
         
