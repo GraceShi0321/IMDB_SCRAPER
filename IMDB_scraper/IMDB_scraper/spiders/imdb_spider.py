@@ -60,7 +60,7 @@ class ImdbSpider(Spider):
         # get the name of the actor/actress
         ActorActress_name = response.css("span.itemprop::text")[0].get()
         # get all movies and TV shows for this actor/actress
-        works             = response.css("div.filmo-category-section div a:first-child::text").getall()
+        works             = response.css('div.filmo-category-section div[class*="filmo-row"] a:first-child::text').getall()
         for movie_or_TV_name in works:
             yield {
                     "actor/actress" : ActorActress_name,
